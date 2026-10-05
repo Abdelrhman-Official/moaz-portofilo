@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Moaz Hessen — Visual Designer • 2027 Portfolio</title>
+<meta name="description" content="Moaz Hessen, 15 y/o visual designer. Brand identities, social content, AI visuals, storytelling & fashion pattern-making. 2027 portfolio." />
+<!-- Techniques applied: 6-layer parallax hero, masked line reveal, word-lighting on scroll, curtain roll-up, floating-card carousel, marquee bleed, sticky process, magnetic buttons, tilt cards -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<style>
+:root{
+  --bg:#07070b; --bg2:#0b0b12; --panel:#11111a; --panel2:#16161f;
+  --line:rgba(232,193,90,.16); --line2:rgba(255,255,255,.08);
+  --gold:#E8C15A; --gold2:#F8DE8A; --gold-dim:#8a6d2b;
+  --cream:#F3EAD3; --muted:#9a9aa8; --muted2:#6b6b7a;
+  --r:20px; --max:1200px;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--cream);font-family:"Space Grotesk",system-ui,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--gold);color:#000}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.mono{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.serif{font-family:"Fraunces",serif}
+/* grain + progress */
+.grain{position:fixed;inset:0;z-index:120;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold-dim),var(--gold2));z-index:200}
+/* preloader */
+#loader{position:fixed;inset:0;background:#050507;z-index:300;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;transition:opacity .7s,visibility .7s}
+#loader.done{opacity:0;visibility:hidden}
+.loader-mark{width:56px;height:56px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-family:"Fraunces",serif;font-style:italic;font-size:26px;color:var(--gold);position:relative;overflow:hidden}
+.loader-mark::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent,var(--gold));opacity:.25;animation:sheen 1.2s infinite}
+@keyframes sheen{0%{transform:translateY(100%)}100%{transform:translateY(-100%)}}
+.loader-bar{width:180px;height:1px;background:#222;position:relative;overflow:hidden}
+.loader-bar span{position:absolute;inset:0;background:var(--gold);transform-origin:left;animation:load 1.4s var(--ease) forwards}
+@keyframes load{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+/* cursor */
+.cursor{position:fixed;width:12px;height:12px;border-radius:50%;background:var(--gold2);z-index:250;pointer-events:none;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+.cursor.big{width:64px;height:64px}
+@media(pointer:coarse){.cursor{display:none}}
+/* nav */
+nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:min(1180px,calc(100% - 24px));z-index:100;display:flex;align-items:center;justify-content:space-between;padding:10px 10px 10px 18px;background:rgba(10,10,16,.72);backdrop-filter:blur(18px);border:1px solid var(--line2);border-radius:100px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.12em;font-size:13px}
+.brand i{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--gold2),var(--gold-dim));display:grid;place-items:center;color:#000;font-style:normal;font-family:"Fraunces",serif;font-weight:700}
+.links{display:flex;gap:22px;font-size:13px;color:var(--muted)}
+.links a:hover{color:var(--gold2)}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:100px;padding:11px 20px;font-size:13px;font-weight:600;border:1px solid var(--line);transition:.3s var(--ease);cursor:pointer}
+.btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#141000;border:none;box-shadow:0 8px 30px rgba(232,193,90,.25)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(232,193,90,.35)}
+.btn-ghost{background:rgba(255,255,255,.04);color:var(--cream)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold2)}
+.burger{display:none;background:none;border:1px solid var(--line2);border-radius:50%;width:38px;height:38px;color:var(--cream)}
+@media(max-width:860px){.links{display:none}.burger{display:block}}
+.mobile{position:fixed;inset:0;background:rgba(5,5,8,.96);backdrop-filter:blur(20px);z-index:99;display:none;padding:100px 30px;flex-direction:column;gap:22px;font-size:28px}
+.mobile.open{display:flex}
+/* layout */
+.wrap{width:min(var(--max),calc(100% - 40px));margin:0 auto}
+section{position:relative;padding:90px 0;content-visibility:auto}
+.eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--gold)}
+h2{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(28px,4vw,48px);line-height:1.05;letter-spacing:-.02em;text-wrap:pretty}
+h2 em{font-style:italic;color:var(--gold2)}
+.sub{color:var(--muted);max-width:560px;margin-top:12px;line-height:1.7;font-size:15px}
+/* HERO 6 layers */
+.hero{min-height:100vh;display:flex;align-items:center;padding:140px 0 60px;overflow:hidden}
+.layer{position:absolute;inset:0;pointer-events:none}
+.depth-0{background:radial-gradient(900px 500px at 50% -10%,rgba(232,193,90,.14),transparent 60%),radial-gradient(700px 500px at 80% 90%,rgba(120,80,200,.08),transparent),#07070b}
+.depth-1 .beam{position:absolute;left:50%;top:-20%;width:620px;height:900px;transform:translateX(-50%);background:linear-gradient(180deg,rgba(248,222,138,.18),transparent 70%);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);filter:blur(10px)}
+.depth-2 .orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5}
+.depth-4{position:relative;pointer-events:auto}
+.hero-grid{position:relative;z-index:4;text-align:center;max-width:860px;margin:0 auto}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:rgba(232,193,90,.08);border-radius:100px;padding:7px 14px;font-size:12px;color:var(--gold2);margin-bottom:22px}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:#7dffa8;box-shadow:0 0 10px #7dffa8;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.hero h1{font-family:"Fraunces",serif;font-size:clamp(42px,7vw,88px);line-height:.95;letter-spacing:-.04em}
+.hero h1 .italic{font-style:italic;font-weight:300;color:transparent;background:linear-gradient(180deg,#fff,var(--gold2));-webkit-background-clip:text;background-clip:text}
+.reveal-line{overflow:hidden;display:block}
+.reveal-line span{display:block;transform:translateY(110%)}
+.hero p{color:var(--muted);max-width:560px;margin:20px auto 0;line-height:1.7}
+.hero-cta{display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap}
+.hero-stats{display:flex;gap:12px;justify-content:center;margin-top:36px;flex-wrap:wrap}
+.stat{border:1px solid var(--line2);background:rgba(255,255,255,.03);backdrop-filter:blur(10px);border-radius:16px;padding:12px 20px;min-width:140px}
+.stat b{font-size:22px;display:block}
+.stat small{color:var(--muted);font-size:12px}
+.scroll-hint{margin:38px auto 0;width:26px;height:44px;border:1px solid var(--line2);border-radius:20px;display:flex;justify-content:center;padding-top:8px}
+.scroll-hint span{width:4px;height:8px;border-radius:4px;background:var(--gold);animation:drop 1.6s infinite}
+@keyframes drop{0%{transform:translateY(0);opacity:1}100%{transform:translateY(16px);opacity:0}}
+/* carousel */
+.stage{position:relative;margin-top:44px}
+.cards{display:flex;gap:18px;align-items:stretch;justify-content:center;perspective:1200px}
+.pcard{width:min(320px,78vw);flex-shrink:0;border-radius:22px;overflow:hidden;background:var(--panel);border:1px solid var(--line2);transition:transform .6s var(--ease),opacity .6s,filter .6s;transform-style:preserve-3d}
+.pcard.side{transform:scale(.86) rotateY(14deg);opacity:.45;filter:blur(1px) brightness(.6)}
+.pcard.side.right{transform:scale(.86) rotateY(-14deg)}
+.pcard.active{transform:scale(1);border-color:var(--line);box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(232,193,90,.2)}
+.ph{aspect-ratio:4/5;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ph small{position:absolute;bottom:12px;left:12px;right:12px;display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.15em;opacity:.8}
+.ph .big{font-family:"Fraunces",serif;font-style:italic;font-size:28px;opacity:.9;text-align:center;line-height:1.1;padding:20px}
+.ph1{background:linear-gradient(160deg,#12372a 0%,#65c9a8 55%,#f3e0b8 100%)}
+.ph2{background:linear-gradient(160deg,#1a1a2e,#4b3a6b 55%,#e8c15a 130%)}
+.ph3{background:linear-gradient(160deg,#2b1d12,#a06a2c 60%,#f8de8a 120%)}
+.ph4{background:linear-gradient(160deg,#0f2a3a,#2a7a9b 60%,#bfe9d8 130%)}
+.ph5{background:linear-gradient(160deg,#2a0f1e,#9b2a5a 60%,#ffb38a 130%)}
+.pmeta{padding:16px 18px}
+.pmeta h4{font-size:15px}
+.pmeta p{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.6}
+.arrows{display:flex;gap:10px;justify-content:center;margin-top:22px}
+.arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--line2);background:rgba(255,255,255,.03);color:var(--cream);cursor:pointer;font-size:18px;transition:.3s}
+.arrow:hover{border-color:var(--gold);color:var(--gold2)}
+/* banner */
+.banner{padding:0}
+.banner-inner{position:relative;height:360px;overflow:hidden;display:flex;align-items:center;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.7)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='400'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%231a2f1a'/%3E%3Cstop offset='1' stop-color='%2307070b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='400' fill='url(%23g)'/%3E%3Cg opacity='.25' stroke='%23E8C15A' stroke-width='1'%3E%3Cpath d='M0 300 Q300 200 600 280 T1200 240' fill='none'/%3E%3C/g%3E%3C/svg%3E");background-size:cover}
+.banner h3{font-family:"Fraunces",serif;font-size:clamp(36px,7vw,92px);white-space:nowrap;position:absolute;left:0;opacity:.14;letter-spacing:-.03em}
+.banner-content{position:relative;z-index:2;padding:0 5vw}
+.banner-content h4{font-family:"Fraunces",serif;font-size:clamp(28px,4vw,52px)}
+.banner-content h4 em{color:var(--gold2)}
+/* quote */
+.quote-box{border:1px solid var(--line2);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01));border-radius:24px;padding:clamp(24px,4vw,54px);text-align:center;position:relative;overflow:hidden}
+.quote-box::before{content:"“";position:absolute;top:-10px;left:20px;font-family:"Fraunces",serif;font-size:120px;color:var(--gold);opacity:.18}
+.quote-box blockquote{font-family:"Fraunces",serif;font-size:clamp(20px,3vw,32px);line-height:1.4;max-width:760px;margin:0 auto}
+.traits{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+@media(max-width:860px){.traits{grid-template-columns:repeat(2,1fr)}}
+.trait{border:1px solid var(--line2);border-radius:16px;padding:18px;background:rgba(255,255,255,.02)}
+.trait b{display:block;margin-bottom:6px}
+.trait p{font-size:13px;color:var(--muted);line-height:1.6}
+.trait span{font-size:20px}
+/* bento */
+.bento{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-top:28px}
+@media(max-width:860px){.bento{grid-template-columns:1fr}}
+.card{border:1px solid var(--line2);border-radius:var(--r);padding:26px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.005));position:relative;overflow:hidden;transition:.4s var(--ease)}
+.card:hover{border-color:rgba(232,193,90,.4);transform:translateY(-4px)}
+.card::after{content:"";position:absolute;inset:0;background:radial-gradient(400px 200px at 80% 0%,rgba(232,193,90,.12),transparent);opacity:0;transition:.4s}
+.card:hover::after{opacity:1}
+.card .num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--gold);letter-spacing:.15em}
+.card h3{font-family:"Fraunces",serif;font-size:22px;margin:10px 0 8px;font-weight:500}
+.card p{font-size:14px;color:var(--muted);line-height:1.7}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.tags span{font-size:11px;border:1px solid var(--line2);border-radius:100px;padding:6px 12px;color:var(--muted)}
+/* marquee */
+.marquee{border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);overflow:hidden;white-space:nowrap;padding:16px 0;background:rgba(232,193,90,.04)}
+.marquee-track{display:inline-flex;gap:28px;animation:scroll 22s linear infinite;font-family:"Fraunces",serif;font-size:22px}
+.marquee-track i{color:var(--gold);font-style:normal}
+@keyframes scroll{to{transform:translateX(-50%)}}
+/* process */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px}
+@media(max-width:860px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.steps{grid-template-columns:1fr}}
+.step{border:1px solid var(--line2);border-radius:18px;padding:22px;background:#0e0e15}
+.step b{font-family:"Fraunces",serif;font-style:italic;font-size:36px;color:var(--gold);opacity:.9}
+.step h4{margin:10px 0 6px}
+.step p{font-size:13px;color:var(--muted);line-height:1.7}
+.step:nth-child(2){transform:translateY(12px)} .step:nth-child(4){transform:translateY(12px)}
+/* timeline */
+.two{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:28px}
+@media(max-width:900px){.two{grid-template-columns:1fr}}
+.tl{border:1px solid var(--line2);border-radius:20px;padding:26px;background:var(--panel)}
+.tl h3{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.job{border-left:1px solid var(--line);padding:0 0 20px 18px;position:relative;margin-left:6px}
+.job::before{content:"";position:absolute;left:-5px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--gold)}
+.job h4{font-size:15px} .job small{color:var(--gold2);font-size:12px}
+.job p{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6}
+.job ul{margin:8px 0 0 16px;font-size:13px;color:var(--muted);line-height:1.7}
+/* stack */
+.stack{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
+@media(max-width:860px){.stack{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.stack{grid-template-columns:1fr}}
+.sbox{border:1px solid var(--line2);border-radius:16px;padding:20px;background:rgba(255,255,255,.02)}
+.sbox h4{font-size:13px;margin-bottom:12px;color:var(--cream)}
+.bar{height:6px;border-radius:10px;background:#222;overflow:hidden;margin-top:8px}
+.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold2));border-radius:10px}
+.srow{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:12px}
+/* contact */
+.contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:16px;margin-top:28px}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr}}
+.c-left{border:1px solid var(--line2);border-radius:20px;padding:28px;background:linear-gradient(180deg,#14141d,#0c0c12)}
+.c-left a.row{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line2);border-radius:14px;padding:14px 16px;margin-top:12px;font-size:14px}
+.c-left a.row:hover{border-color:var(--gold)}
+form{border:1px solid var(--line2);border-radius:20px;padding:28px;background:rgba(255,255,255,.02)}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.f2{grid-template-columns:1fr}}
+label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
+input,select,textarea{width:100%;background:#0a0a10;border:1px solid var(--line2);border-radius:12px;padding:13px 14px;color:var(--cream);font-size:14px;outline:none;transition:.3s}
+input:focus,textarea:focus,select:focus{border-color:var(--gold)}
+.field{margin-bottom:14px}
+textarea{min-height:110px;resize:vertical}
+/* footer */
+footer{border-top:1px solid var(--line2);padding:50px 0 24px;margin-top:40px}
+.f-grid{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.f-grid small{color:var(--muted2);display:block;margin-top:8px;line-height:1.7}
+.bottom{display:flex;justify-content:space-between;gap:10px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line2);font-size:12px;color:var(--muted2);flex-wrap:wrap}
+/* reveal */
+[data-reveal]{opacity:0;transform:translateY(28px)}
+.word-light{color:#3a3a46;transition:color .4s}
+.word-light.on{color:var(--cream)}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  [data-reveal]{opacity:1;transform:none}
+  .reveal-line span{transform:none}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="progress" id="progress"></div>
+<div class="cursor" id="cursor"></div>
+
+<div id="loader"><div class="loader-mark">M</div><div style="font-family:Fraunces,serif;font-style:italic">Moaz Hessen</div><div class="loader-bar"><span></span></div><div class="mono" style="color:#666">2027 portfolio — loading light</div></div>
+
+<nav>
+  <a class="brand" href="#top"><i>M</i> MOAZ HESSEN <span class="mono" style="border:1px solid var(--line);border-radius:100px;padding:4px 10px;margin-left:6px">2027</span></a>
+  <div class="links"><a href="#work">Work</a><a href="#vision">Vision</a><a href="#services">Services</a><a href="#process">Process</a><a href="#about">Story</a><a href="#contact">Contact</a></div>
+  <div style="display:flex;gap:8px;align-items:center"><a href="#contact" class="btn btn-gold magnetic">Start a project ↗</a><button class="burger" id="burger">☰</button></div>
+</nav>
+<div class="mobile" id="mobile"><a href="#work">Work</a><a href="#vision">Vision</a><a href="#services">Services</a><a href="#process">Process</a><a href="#contact">Contact</a></div>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="layer depth-0" data-depth="0"></div>
+  <div class="layer depth-1" data-depth="1" aria-hidden="true"><div class="beam"></div></div>
+  <div class="layer depth-2" data-depth="2" aria-hidden="true">
+    <div class="orb" style="left:10%;top:30%;width:320px;height:320px;background:rgba(232,193,90,.18)"></div>
+    <div class="orb" style="right:8%;top:55%;width:260px;height:260px;background:rgba(90,140,255,.14)"></div>
+  </div>
+  <div class="wrap hero-grid layer depth-4" data-depth="4">
+    <div class="pill"><span class="dot"></span> 15 y/o visual designer • brand / social / AI / fashion • open for 2027</div>
+    <h1><span class="reveal-line"><span>A quiet light,</span></span><span class="reveal-line"><span class="italic">finding form in the dark.</span></span></h1>
+    <p id="hero-desc">I'm <b style="color:var(--cream)">Moaz Hessen</b> — I design purposeful brand identities, scroll-stopping social content, and cinematic AI visuals. Young eye, old soul for detail. Structure first, decoration last.</p>
+    <div class="hero-cta"><a href="#work" class="btn btn-gold magnetic">View selected work ↓</a><a href="#contact" class="btn btn-ghost magnetic">Start a project →</a></div>
+    <div class="hero-stats">
+      <div class="stat"><b><span data-count="80">0</span>+</b><small>Social & brand pieces</small></div>
+      <div class="stat"><b><span data-count="25">0</span>+</b><small>Old projects archived</small></div>
+      <div class="stat"><b><span data-count="5">0</span></b><small>Disciplines, one eye</small></div>
+      <div class="stat"><b>2027</b><small>Native AI workflow</small></div>
+    </div>
+    <div class="scroll-hint"><span></span></div>
+  </div>
+</header>
+
+<!-- WORK -->
+<section id="work"><div class="wrap">
+  <div class="eyebrow mono">01 — Selected work • 2024 → 2027</div>
+  <div style="display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap">
+    <h2>Form, light, and <em>visual direction.</em></h2>
+    <div style="display:flex;gap:8px"><span class="mono" style="border:1px solid var(--line);padding:8px 14px;border-radius:100px">● Live carousel</span><span class="mono" style="border:1px solid var(--line2);padding:8px 14px;border-radius:100px;color:var(--muted)">Drag / click arrows</span></div>
+  </div>
+  <p class="sub">Same DNA as your reference — dark luxe + gold — but rebuilt cleaner, bigger type, deeper depth. Below are <b>placeholders for old projects</b>. Swap any <span class="mono">.ph</span> block with a real &lt;img&gt; later, no layout change needed.</p>
+  <div class="stage" data-reveal>
+    <div class="cards" id="cards">
+      <!-- REPLACE IMAGE: copy-paste <img src="your-old-project.jpg" style="width:100%;height:100%;object-fit:cover"> inside .ph -->
+      <div class="pcard side"><div class="ph ph2"><div class="big">Old Project<br>01</div><small><span>PLACEHOLDER</span><span>BRANDING</span></small></div><div class="pmeta"><h4>Natura — Social Media Kit</h4><p>30+ templates • green system • Arabic + Latin type. Replace with real cover.</p></div></div>
+      <div class="pcard side"><div class="ph ph3"><div class="big">Old Project<br>02</div><small><span>PLACEHOLDER</span><span>EDITORIAL</span></small></div><div class="pmeta"><h4>Atelier Poster Series</h4><p>Fashion week posters, pattern grids. Drop old JPG here.</p></div></div>
+      <div class="pcard active"><div class="ph ph1"><div class="big">Old Project<br>03 ★</div><small><span>PLACEHOLDER</span><span>FEATURED</span></small></div><div class="pmeta"><h4>Synthetic Dreams — AI Editorial</h4><p>AI + photography blend. Best slot — put strongest old work here.</p></div></div>
+      <div class="pcard side right"><div class="ph ph4"><div class="big">Old Project<br>04</div><small><span>PLACEHOLDER</span><span>AI VISUAL</span></small></div><div class="pmeta"><h4>TV Static / Memory</h4><p>Cinematic AI stills for film studio.</p></div></div>
+      <div class="pcard side right"><div class="ph ph5"><div class="big">Old Project<br>05</div><small><span>PLACEHOLDER</span><span>APPAREL</span></small></div><div class="pmeta"><h4>Pattern Drop 05</h4><p>Repeat patterns for garments.</p></div></div>
+    </div>
+    <div class="arrows"><button class="arrow" id="prev">←</button><button class="arrow" id="next">→</button></div>
+    <p class="mono" style="text-align:center;margin-top:14px;color:var(--muted)">Tip for Moaz: to replace — open index.html, search OLD PROJECT, paste &lt;img&gt; inside .ph div. Done.</p>
+  </div>
+</div></section>
+
+<!-- BANNER -->
+<div class="banner"><div class="banner-inner">
+  <h3 id="bigtext">TACTILE DREAMS — TACTILE DREAMS — TACTILE DREAMS</h3>
+  <div class="banner-content wrap"><div class="mono">Interlude • AI + memory</div><h4>Synthetic <em class="serif">Dreams</em> — reimagined.</h4><p class="sub">Nostalgia: a chair in a field, a TV with static. I rebuild childhood memory with AI, grain and gold.</p></div>
+</div></div>
+
+<!-- VISION -->
+<section id="vision"><div class="wrap">
+  <div class="eyebrow mono">02 — The vision</div>
+  <h2 data-reveal>Young, but <em>obsessed with detail.</em></h2>
+  <div style="height:18px"></div>
+  <div class="quote-box" data-reveal><blockquote id="quote">Creative, thoughtful, and detail-oriented. I love meaningful ideas, beautiful visuals, and designs that have purpose.</blockquote><div class="mono" style="margin-top:14px">— Moaz Hessen, design note</div></div>
+  <div class="traits">
+    <div class="trait" data-reveal><span>◐</span><b>Attentive</b><p>Nothing ships blurry, off-grid or off-tone. I check twice.</p></div>
+    <div class="trait" data-reveal><span>◎</span><b>Introspective</b><p>Quiet process, loud result. Moodboards before pixels.</p></div>
+    <div class="trait" data-reveal><span>♡</span><b>Empathic</b><p>Design for the viewer, not for likes. Message first.</p></div>
+    <div class="trait" data-reveal><span>✦</span><b>Independent</b><p>Self-taught since 12. Brief → concept → delivery, solo.</p></div>
+  </div>
+  <div class="two">
+    <div class="tl" data-reveal><h3>✦ What I learned early</h3><div class="job"><h4>Self-taught sprint — 2023 → now</h4><small>Photoshop → AI → Fashion</small><p>Started at 12 on phone apps. Now full desktop workflow. 3 years of daily practice beats theory.</p></div><div class="job"><h4>Studio helper experience</h4><small>Picture Studio Film — set / edit assist</small><p>Watched how light, acting and edit change a story. I bring cinema thinking into still graphics.</p></div></div>
+    <div class="tl" data-reveal><h3>✦ How I work at 15</h3><div class="job"><h4>Fast, clear, honest</h4><small>School-friendly timelines</small><ul><li>Reply within 24h, delivery in days not weeks</li><li>You get source files + export guide</li><li>2 revision rounds included, always</li></ul></div><div class="job"><h4>AI as pencil, not crutch</h4><small>Midjourney / Firefly + Photoshop</small><p>AI for ideation and backgrounds, human eye for type, layout and taste.</p></div></div>
+  </div>
+</div></section>
+
+<!-- SERVICES -->
+<section id="services" style="background:linear-gradient(180deg,transparent,rgba(232,193,90,.04),transparent)"><div class="wrap">
+  <div class="eyebrow mono">03 — What I do</div>
+  <h2 data-reveal>Five crafts, <em>one visual language.</em></h2>
+  <p class="sub">Pick one service or bundle them. Every project ends withurse: organized files, mockups, and a 1-page usage guide.</p>
+  <div class="bento">
+    <div class="card" data-reveal><div class="num">01 / SOCIAL FIRST</div><h3>Visual content & social post design</h3><p>Carousels, reels covers, stories and ad creatives engineered to stop the thumb — hook in 0.8s, clarity in 3s. Arabic + English layouts.</p><div class="tags"><span>Instagram kits</span><span>Ad creatives</span><span>Carousels</span><span>Thumbnails</span></div></div>
+    <div class="card" data-reveal><div class="num">02 / IDENTITY</div><h3>Branding & creative direction</h3><p>Logo, palette, type and art direction. Small brands that want to look funded.</p><div class="tags"><span>Logo</span><span>Guidelines</span></div></div>
+    <div class="card" data-reveal><div class="num">03 / AI 2027</div><h3>AI-generated visuals & video</h3><p>Cinematic key visuals, product scenes, pattern fills. Prompt → curate → retouch. No plastic AI look.</p><div class="tags"><span>Key visuals</span><span>Backgrounds</span><span>Motion loops</span></div></div>
+    <div class="card" data-reveal><div class="num">04 / STORY</div><h3>Storytelling through visuals</h3><p>Turning scripts into sequences: teaser → reveal → proof. For launches and short films.</p></div>
+    <div class="card" data-reveal style="grid-column:1/-1"><div class="num">05 / FASHION</div><h3>Fashion design & pattern making — my edge</h3><p>Most graphic designers can't cut fabric. I can: sketches → flat patterns → print-ready repeats. Apparel graphics that actually sew correctly.</p><div class="tags"><span>Pattern drafting</span><span>Repeat prints</span><span>Tech packs</span><span>Mockups</span></div></div>
+  </div>
+</div></section>
+
+<div class="marquee"><div class="marquee-track" id="mtrack"><span>AI Visuals <i>✦</i> Editorial <i>✦</i> Apparel Graphics <i>✦</i> Pattern Making <i>✦</i> Brand Identities <i>✦</i> Social Kits <i>✦</i> </span><span>AI Visuals <i>✦</i> Editorial <i>✦</i> Apparel Graphics <i>✦</i> Pattern Making <i>✦</i> Brand Identities <i>✦</i> Social Kits <i>✦</i> </span></div></div>
+
+<!-- PROCESS -->
+<section id="process"><div class="wrap">
+  <div class="eyebrow mono">04 — How I work</div>
+  <h2 data-reveal>Four phases, <em>every project.</em></h2>
+  <div class="steps">
+    <div class="step" data-reveal><b>01</b><h4>Discover</h4><p>15-min call + 5-question brief. I audit competitors and collect references. You approve direction before I design.</p><div class="mono" style="margin-top:10px">Day 1 • Free</div></div>
+    <div class="step" data-reveal><b>02</b><h4>Direction</h4><p>Moodboard + 2 routes: safe vs bold. We lock palette, type and vibe. No endless guessing.</p><div class="mono" style="margin-top:10px">Day 2 • Moodboard</div></div>
+    <div class="step" data-reveal><b>03</b><h4>Design</h4><p>Real drafts, real content — not lorem. Daily previews on WhatsApp. You comment, I refine.</p><div class="mono" style="margin-top:10px">Day 3-5 • Drafts</div></div>
+    <div class="step" data-reveal><b>04</b><h4>Deliver</h4><p>Final + source + mockups + 1-page guide. 2 revisions. I stay for launch day fixes.</p><div class="mono" style="margin-top:10px">Final • Handover</div></div>
+  </div>
+</div></section>
+
+<!-- STORY / CREDENTIALS -->
+<section id="about" style="padding-top:20px"><div class="wrap">
+  <div class="eyebrow mono">05 — Experience & essentials</div>
+  <h2 data-reveal>Small age, <em>serious mileage.</em></h2>
+  <div class="two">
+    <div class="tl" data-reveal><h3>◉ Professional Experience</h3>
+      <div class="job"><h4>Freelance Graphic Designer — 2023 → now</h4><small>Remote • Social + Branding</small><ul><li>Designed 80+ posts, menus, ads for local shops & creators</li><li>Built 6 mini-identities (logo + palette + templates)</li><li>Handle brief → delivery solo, on school schedule</li></ul></div>
+      <div class="job"><h4>Picture Studio Film — Helper / Edit Assist</h4><small>On-set + post • Placeholder dates</small><ul><li>Assisted staging, continuity and BTS stills</li><li>Cut reels / teasers, cleaned audio, added subtitles</li><li>Learned cinematic pacing I now use in carousels</li></ul><p class="mono" style="margin-top:8px;color:var(--muted2)">→ Replace dates / director name with real credit</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="tl" data-reveal><h3>✎ Education</h3><div class="job"><h4>Self-directed + Online Specialization</h4><small>Design + Pattern making</small><p>Courses in layout, color, AI tools and flat pattern drafting. <span class="mono">[PLACEHOLDER — add school / diploma when ready]</span></p></div></div>
+      <div class="tl" data-reveal><h3>✦ Certifications & Courses</h3><div class="job"><h4>Cut & Sewing Basics</h4><small>Pattern course • [PLACEHOLDER]</small></div><div class="job"><h4>Adobe Photoshop: Beginner → Advanced</h4><small>Online • [PLACEHOLDER CERT]</small></div><div class="job"><h4>Fashion Design for Beginners</h4><small>Online • [PLACEHOLDER]</small></div></div>
+    </div>
+  </div>
+  <div class="tl" data-reveal style="margin-top:14px"><h3>Creative Stack — hover to see level <span style="float:right" class="mono">Software / Output</span></h3>
+    <div class="stack">
+      <div class="sbox"><h4>Design</h4><div class="srow"><span>Photoshop</span><span>92%</span></div><div class="bar"><span style="width:92%"></span></div><div class="srow"><span>Illustrator</span><span>78%</span></div><div class="bar"><span style="width:78%"></span></div><div class="srow"><span>Canva / Figma</span><span>85%</span></div><div class="bar"><span style="width:85%"></span></div></div>
+      <div class="sbox"><h4>AI & Video</h4><div class="srow"><span>Midjourney / Firefly</span><span>88%</span></div><div class="bar"><span style="width:88%"></span></div><div class="srow"><span>CapCut / Premiere</span><span>80%</span></div><div class="bar"><span style="width:80%"></span></div><div class="srow"><span>After Effects basics</span><span>55%</span></div><div class="bar"><span style="width:55%"></span></div></div>
+      <div class="sbox"><h4>Fashion</h4><div class="srow"><span>Pattern drafting</span><span>75%</span></div><div class="bar"><span style="width:75%"></span></div><div class="srow"><span>Clo3D / Mockups</span><span>60%</span></div><div class="bar"><span style="width:60%"></span></div><div class="srow"><span>Print repeats</span><span>82%</span></div><div class="bar"><span style="width:82%"></span></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- CONTACT -->
+<section id="contact"><div class="wrap">
+  <div class="eyebrow mono">06 — Say hello • Start a project</div>
+  <h2 data-reveal>Say hello, or <em>send a brief.</em></h2>
+  <p class="sub">Available for branding, social kits, AI visuals and pattern work. Reply within 24h — after school hours (Cairo time).</p>
+  <div class="contact-grid">
+    <div class="c-left" data-reveal><div class="mono">Direct</div><h3 class="serif" style="font-size:26px;margin:8px 0">Let's start a conversation.</h3>
+      <a class="row" href="mailto:hello@moazhessen.design">✉ hello@moazhessen.design <span>↗</span></a>
+      <a class="row" href="tel:+200000000000">◷ +20 00 000 0000 <span style="font-size:11px;color:var(--muted)">[REPLACE NUMBER]</span></a>
+      <a class="row" href="https://wa.me/200000000000" target="_blank" rel="noopener">◉ WhatsApp — fastest <span>↗</span></a>
+      <a class="row" href="#" onclick="return false">◎ Behance / Instagram <span style="font-size:11px;color:var(--muted)">[ADD LINKS]</span></a>
+      <div style="display:flex;gap:8px;margin-top:16px"><span class="mono" style="border:1px solid var(--line);padding:8px 12px;border-radius:100px">● Available now</span><span class="mono" style="border:1px solid var(--line2);padding:8px 12px;border-radius:100px;color:var(--muted)">2 slots / month</span></div>
+    </div>
+    <form id="brief" data-reveal onsubmit="return sendBrief(event)"><div class="f2"><div class="field"><label>Name</label><input required placeholder="Your name" id="f-name"></div><div class="field"><label>Email / WhatsApp</label><input required placeholder="how to reach you"></div></div><div class="f2"><div class="field"><label>Service</label><select><option>Social content kit</option><option>Branding + direction</option><option>AI visuals</option><option>Fashion / pattern</option><option>Other</option></select></div><div class="field"><label>Budget</label><select><option>$50 – $150</option><option>$150 – $400</option><option>$400+</option><option>Not sure yet</option></select></div></div><div class="field"><label>About your project</label><textarea id="f-msg" required placeholder="What do you need? deadline? links to old stuff you like?"></textarea></div><button class="btn btn-gold" style="width:100%;justify-content:center;padding:15px" type="submit">✦ Send brief → opens email</button><p class="mono" id="form-note" style="margin-top:10px;color:var(--muted)">No spam. I reply personally.</p></form>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div style="border:1px solid var(--line2);border-radius:20px;padding:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:linear-gradient(180deg,rgba(232,193,90,.08),transparent)">
+    <h3 class="serif" style="font-size:clamp(20px,3vw,30px)">Have a brief, or <em style="color:var(--gold2)">just an idea?</em></h3><a href="#contact" class="btn btn-gold magnetic">Start a project ↗</a>
+  </div>
+  <div class="f-grid" style="margin-top:28px">
+    <div><div class="brand"><i>M</i> MOAZ HESSEN</div><small>15 y/o visual designer.<br>Brand • Social • AI • Fashion.<br>Dark, quiet, precise — with gold.</small></div>
+    <div><div class="mono">Sitemap</div><small><a href="#work">Work</a><br><a href="#services">Services</a><br><a href="#process">Process</a></small></div>
+    <div><div class="mono">Socials</div><small>[add Instagram]<br>[add Behance]<br>[add TikTok]</small></div>
+    <div><div class="mono">Contact</div><small>hello@moazhessen.design<br>Cairo • Remote worldwide</small></div>
+  </div>
+  <div class="bottom"><span>© 2027 Moaz Hessen — designed with light in the dark.</span><span>Replace placeholders → launch. v1.0 2027 theme</span></div>
+</div></footer>
+
+<script>
+// loader
+window.addEventListener('load',()=>{setTimeout(()=>document.getElementById('loader').classList.add('done'),900); animHero();});
+setTimeout(()=>document.getElementById('loader').classList.add('done'),3500);
+function animHero(){ if(window.gsap){ gsap.to('.reveal-line span',{y:0,duration:1.2,stagger:.12,ease:'power4.out'});} else {document.querySelectorAll('.reveal-line span').forEach(s=>s.style.transform='none');} }
+// progress + parallax
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  const y=h.scrollTop; document.querySelectorAll('.depth-1,.depth-2').forEach((el,i)=>{el.style.transform=`translateY(${y*(0.08+i*0.06)}px)`;});
+  const bt=document.getElementById('bigtext'); if(bt) bt.style.transform=`translateX(${-y*0.15}px)`;
+},{passive:true});
+// reveals
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.transition='all .8s cubic-bezier(.16,1,.3,1)';e.target.style.opacity=1;e.target.style.transform='none';io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
+// counters
+const cio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target,end=+el.dataset.count;let s=null;function tick(t){if(!s)s=t;const p=Math.min((t-s)/1400,1);el.textContent=Math.round(end*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);cio.unobserve(el);}));
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+// carousel
+const cards=[...document.querySelectorAll('.pcard')]; let idx=2;
+function render(){cards.forEach((c,i)=>{c.className='pcard '+(i===idx?'active':(i<idx?'side':'side right'));});}
+document.getElementById('prev').onclick=()=>{idx=(idx-1+cards.length)%cards.length;render();};
+document.getElementById('next').onclick=()=>{idx=(idx+1)%cards.length;render();};
+cards.forEach((c,i)=>c.onclick=()=>{idx=i;render();});
+// quote word lighting
+const q=document.getElementById('quote'); const words=q.textContent.split(' '); q.innerHTML=words.map(w=>`<span class="word-light">${w}</span>`).join(' ');
+const qio=new IntersectionObserver(es=>{es.forEach(e=>{if(!e.isIntersecting)return;let i=0;const t=setInterval(()=>{const s=q.querySelectorAll('.word-light')[i];if(!s){clearInterval(t);return;}s.classList.add('on');i++;},90);qio.unobserve(q);});},{threshold:.5}); qio.observe(q);
+// cursor + magnetic
+const cur=document.getElementById('cursor');
+if(matchMedia('(pointer:fine)').matches){addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';});document.querySelectorAll('a,.pcard,button').forEach(el=>{el.addEventListener('mouseenter',()=>cur.classList.add('big'));el.addEventListener('mouseleave',()=>cur.classList.remove('big'));});
+document.querySelectorAll('.magnetic').forEach(b=>{b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.15}px,${(e.clientY-r.top-r.height/2)*.15}px)`;});b.addEventListener('mouseleave',()=>b.style.transform='');});}
+// tilt
+if(matchMedia('(pointer:fine)').matches){document.querySelectorAll('.pcard,.card').forEach(c=>{c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(900px) rotateY(${x*10}deg) rotateX(${-y*10}deg) translateY(-4px)`;});c.addEventListener('mouseleave',()=>{c.style.transform=''; if(c.classList.contains('pcard'))render();});});}
+// mobile
+const burger=document.getElementById('burger'),mob=document.getElementById('mobile');burger.onclick=()=>mob.classList.toggle('open');mob.querySelectorAll('a').forEach(a=>a.onclick=()=>mob.classList.remove('open'));
+// form -> mailto
+function sendBrief(e){e.preventDefault();const n=document.getElementById('f-name').value,m=document.getElementById('f-msg').value;window.location.href=`mailto:hello@moazhessen.design?subject=${encodeURIComponent('Brief from '+n)}&body=${encodeURIComponent(m)}`;document.getElementById('form-note').textContent='Opening your email app… shukran!';return false;}
+// gsap scroll polish
+if(window.gsap&&window.ScrollTrigger){gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('[data-reveal]').forEach(el=>{gsap.fromTo(el,{y:28,opacity:0},{y:0,opacity:1,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}});});}
+</script>
+</body>
+</html>
