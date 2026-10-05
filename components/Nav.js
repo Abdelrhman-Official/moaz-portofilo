@@ -45,6 +45,7 @@ export default function Nav() {
       </div>
       {open && (
         <div style={{ background: "#050508", borderBottom: "1px solid var(--line2)", padding: 20, display: "flex", flexDirection: "column", gap: 14, fontSize: 22 }}>
+          <a href="#contact" onClick={() => setOpen(false)} className="btn btn-gold shine" style={{ justifyContent: "center" }}>{d.nav.cta}</a>
           {IDS.map((id, i) => (
             <a key={id} href={"#" + id} onClick={() => setOpen(false)}>{d.nav.links[i]}</a>
           ))}

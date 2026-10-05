@@ -39,7 +39,7 @@ button{font-family:inherit}
 .topbar{position:sticky;top:0;z-index:55;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(7,7,11,.78);backdrop-filter:blur(16px);border-bottom:1px solid var(--line2)}
 .topbar nav{display:flex;gap:22px;font-size:13px;color:var(--muted)}
 .topbar nav a:hover{color:var(--gold2)}
-.btn{display:inline-flex;align-items:center;gap:8px;border-radius:2px;padding:12px 20px;font-size:13px;font-weight:600;letter-spacing:.02em;cursor:pointer;border:1px solid var(--line);transition:.3s}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:2px;padding:12px 20px;font-size:13px;font-weight:600;letter-spacing:.02em;cursor:pointer;border:1px solid var(--line);transition:.3s;white-space:nowrap}
 .btn-gold{background:var(--gold);color:#141000;border-color:var(--gold)}
 .btn-gold:hover{background:var(--gold2);transform:translateY(-1px)}
 .btn-line{background:transparent;color:var(--cream)}
@@ -110,6 +110,34 @@ main{margin:0}
 .row .t small{display:block;font-size:12px;color:var(--muted);font-weight:400;margin-top:4px}
 .row .cat{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.12em}
 @media(max-width:760px){.hide-m{display:none}}
+
+/* ————— MOBILE (≤600px): room to breathe ————— */
+@media(max-width:600px){
+  .topbar{padding:10px 12px;gap:8px}
+  .wordmark{font-size:18px;gap:6px}
+  .wordmark .wm-badge{display:none}
+  .topbar .btn-gold{display:none}
+  .lang-toggle span{padding:7px 10px;font-size:11px}
+  .burger{width:36px;height:36px;flex-shrink:0}
+  .hero-grid{padding-top:26px}
+  .hero-meta div{padding:12px 10px}
+  .hero-meta b{font-size:24px}
+  .hero-strip div{font-size:9px;padding:12px 10px}
+  .arch-wrap{justify-self:center}
+  .seal{width:88px;height:88px;top:-24px;right:0}
+  .float-chip{font-size:9px;padding:8px 10px;white-space:normal;max-width:150px}
+  .chip-a{top:6px!important;left:6px!important}
+  .chip-b{top:40%!important;right:6px!important}
+  .chip-c{bottom:64px!important;left:6px!important}
+  .sec-head h2{font-size:34px}
+  .row{grid-template-columns:40px 1fr 34px;gap:10px;padding:16px 6px}
+  .row .t{font-size:17px}
+  .preview-inner{padding:6px 6px 20px}
+  .acc-head{grid-template-columns:52px 1fr auto;padding:18px 6px}
+  .acc-head .t{font-size:19px}
+  .hscroll{padding:20px 0 28px}
+  .hand{inset-inline-start:8px!important;bottom:-8px!important;font-size:18px}
+}
 .row .yr{font-family:var(--mono);font-size:11px;color:var(--gold2);border:1px solid var(--line);padding:6px 10px}
 .row .go{width:34px;height:34px;border:1px solid var(--line2);border-radius:50%;display:grid;place-items:center;transition:.3s}
 .row:hover .go{background:var(--gold);color:#000;border-color:var(--gold)}

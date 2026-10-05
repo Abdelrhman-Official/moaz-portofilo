@@ -83,9 +83,9 @@ export default function Hero() {
               <text fontSize="10.5" fill="#E8C15A" fontFamily="JetBrains Mono" letterSpacing="2"><textPath href="#c">{lang === "ar" ? "• معاذ حسين • ATELIER NOIR •" : "ATELIER NOIR • SINCE 2023 • MOAZ HUSSEIN •"}</textPath></text>
               <text x="50" y="58" textAnchor="middle" fontSize="24" fill="#F8DE8A" fontFamily="Fraunces" fontStyle="italic">M</text>
             </svg>
-            <div className="float-chip" style={{ top: 40, left: -70, animationDelay: "-2s" }}>{h.chips[0].t}<small>{h.chips[0].s}</small></div>
-            <div className="float-chip" style={{ top: "46%", right: -56, animationDelay: "-3.5s" }}>{h.chips[1].t}<small>{h.chips[1].s}</small></div>
-            <div className="float-chip" style={{ bottom: 90, left: -56, animationDelay: "-1s" }}>{h.chips[2].t}<small>{h.chips[2].s}</small></div>
+            <div className="float-chip chip-a" style={{ top: 40, left: -70, animationDelay: "-2s" }}>{h.chips[0].t}<small>{h.chips[0].s}</small></div>
+            <div className="float-chip chip-b" style={{ top: "46%", right: -56, animationDelay: "-3.5s" }}>{h.chips[1].t}<small>{h.chips[1].s}</small></div>
+            <div className="float-chip chip-c" style={{ bottom: 90, left: -56, animationDelay: "-1s" }}>{h.chips[2].t}<small>{h.chips[2].s}</small></div>
             <div className="arch">
               <img src="/moaz.jpg" alt="Moaz Hussein — portrait" />
               <div className="shade" aria-hidden="true" />
